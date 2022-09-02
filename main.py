@@ -16,14 +16,15 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(midbottom = (200,300))
         self.gravity = 0
 
-        self.jump_sound = pygame.mixer.Sound('audio/jump.mp3')
-        self.jump_sound.set_volume(0.2)
+        self.jump_sound = pygame.mixer.Sound('audio/jump.wav')
+        self.jump_sound.set_volume(0.01)
 
     def player_input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE] and self.rect.bottom >= 300:
-            self.gravity = -20
             self.jump_sound.play()
+            self.gravity = -20
+            
 
     def apply_gravity(self):
         self.gravity += 1
@@ -63,7 +64,9 @@ class Obstacle(pygame.sprite.Sprite):
         self.animation_index = 0
         self.image = self.frames[self.animation_index]
         self.rect = self.image.get_rect(midbottom = (random.randint(900,1100),y_pos))
-        self.speed = 8
+        self.speed = 10
+
+
 
     def animation_state(self):
         self.animation_index += 0.1
@@ -73,7 +76,7 @@ class Obstacle(pygame.sprite.Sprite):
 
     def update(self):
         self.animation_state()
-        self.rect.x -= self.speed
+        self.rect.x -= self.speed 
         self.destroy()
 
     def destroy(self):
@@ -146,10 +149,10 @@ fail_message_rect2 = fail_message.get_rect(center = (650, 150))
 #TIMER
 obstacle_timer = pygame.USEREVENT + 1
 pygame.time.set_timer(obstacle_timer,900)
-
+music.play(loops = -1)
 #GAME LOOP
 while True:
-    music.play(loops = -1)
+
     #EVENT LOOP
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -190,7 +193,7 @@ while True:
                 tempHighScore = currentHighScore
             else:
                 display_highScore(font,tempHighScore)
-             
+        
     else:
         #WAITING SCREEN
         screen.fill((94,129,162))
